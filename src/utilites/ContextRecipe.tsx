@@ -1,5 +1,5 @@
 import { createContext, FormEvent, ReactNode, useState } from "react";
-import { Recipe } from "../types/Recipe";
+import { Recipe, RecipeDetails } from "../types/Recipe";
 import { useNavigate } from "react-router-dom";
 import { searchRecipesByIngredient } from "../services/recipeService";
 
@@ -8,11 +8,11 @@ interface GlobalContextProps {
     searchParam: string;
     loading: boolean;
     recipeList: Recipe[];
-    recipeDetailsData: Recipe | null;
+    recipeDetailsData: RecipeDetails | null;
     favoritesList: Recipe[];
     setSearchParam: (param: string) => void;
     handleSubmit: (e: FormEvent<HTMLFormElement>) => Promise<void>;
-    setRecipeDetailsData: (recipe: Recipe | null) => void;
+    setRecipeDetailsData: (recipe: RecipeDetails | null) => void;
     handleAddToFavorite: (item: Recipe) => void;
 }
 
@@ -27,7 +27,7 @@ export const GlobalState = ({ children } : GlobalStateProps) => {
     const [searchParam, setSearchParam] = useState<string>("");
     const [loading, setLoading] = useState<boolean>(false);
     const [recipeList, setRecipeList] = useState<Recipe[]>([]);
-    const [recipeDetailsData, setRecipeDetailsData] = useState<Recipe | null>(null);
+    const [recipeDetailsData, setRecipeDetailsData] = useState<RecipeDetails | null>(null);
     const [favoritesList, setfavoritesList] = useState<Recipe[]>([]);
 
     const navigate = useNavigate();
@@ -49,13 +49,13 @@ export const GlobalState = ({ children } : GlobalStateProps) => {
         }
     }
 
-    const handleAddToFavorite = (item: Recipe) => {
-        
-        const isFavorite = favoritesList.some(fav => fav.id === item.id);
-        setfavoritesList(prev=>
-            isFavorite ? prev.filter(fav => fav.id !== item.id) : [...prev, item]
-        );
-    }
+    const handleAddToFavorite = (recipe : Recipe) => {
+        if(favoritesList.some((item) => item.id === recipe.id)){
+            setfavoritesList(favoritesList.filter((item) => item.id !== recipe.id))
+        }else{
+            setfavoritesList([...favoritesList, recipe]);
+        }
+    };
 
     return(
         <GlobalContext.Provider
