@@ -2,7 +2,7 @@ import { useContext } from "react"
 import { GlobalContext } from "../utilites/ContextRecipe"
 import { NavLink } from "react-router-dom";
 
-const navbar = () => {
+const Navbar = () => {
 
     const context = useContext(GlobalContext);
 
@@ -56,4 +56,4 @@ const navbar = () => {
   )
 }
 
-export default navbar
+export default Navbar
