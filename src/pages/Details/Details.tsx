@@ -2,6 +2,7 @@ import { useParams } from "react-router-dom";
 import { useContext, useEffect } from "react";
 import { GlobalContext } from "../../utilites/ContextRecipe";
 import { getRecipeById } from "../../services/recipeService";
+import { convertUnit } from "../../utilites/ConvertUnits";
 
 
 
@@ -86,8 +87,8 @@ const Details = () => {
           <ul className="flex flex-col gap-3">
             {recipeDetailsData?.ingredients.map((ingredient, index) =>(
               <li key={index}>
-                <span className="text-lg font-medium text-black">
-                  {ingredient.quantity ?? "-"} {ingredient.unit} {ingredient.description}
+                <span className="text-lg font-medium text-black capitalize">
+                  {ingredient.quantity ?? "-"} {convertUnit(ingredient.unit)} {ingredient.description}
                 </span>
               </li>
             ))}
