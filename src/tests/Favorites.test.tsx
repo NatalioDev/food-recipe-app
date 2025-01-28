@@ -40,7 +40,8 @@ describe("Favorites Component", () => {
 
     // Verificamos que el mensaje "Nothing is added in favorites." aparece en el DOM.
     expect(
-      screen.getByText("Nothing is added in favorites.")
+      screen.getByText("Nothing is added in favorites."),
+      "The message for empty favorites list was not found."
     ).toBeInTheDocument(); // Si el mensaje no está, el test fallará.
   });
 
@@ -80,11 +81,15 @@ describe("Favorites Component", () => {
     const items = screen.getAllByTestId("item-recipe");
 
     // Verificamos que la cantidad de elementos renderizados es igual a la cantidad de favoritos.
-    expect(items).toHaveLength(2);
+    expect(items, "The number of rendered items is incorrect").toHaveLength(2);
 
     // Verificamos que los textos de los elementos son los correctos.
-    expect(items[0]).toHaveTextContent("Recipe 1");
-    expect(items[1]).toHaveTextContent("Recipe 2");
+    expect(items[0],
+        "The first favorite item does not have the correct title."
+    ).toHaveTextContent("Recipe 1");
+    expect(items[1],
+        "The second favorite item does not have the correct title."
+    ).toHaveTextContent("Recipe 2");
   });
 
   // **Tercer test: Verifica que lanza un error si el contexto no está disponible.**
@@ -93,8 +98,10 @@ describe("Favorites Component", () => {
     const spy = vi.spyOn(console, "error").mockImplementation(() => {});
 
     // Intentamos renderizar el componente sin el contexto y verificamos que lanza un error.
-    expect(() => render(<Favorites />)).toThrow(
-      "Home must be used within a GlobalProvider"
+    expect(() => render(<Favorites />),
+    "The component did not throw the expected error when context was missing."
+    ).toThrow(
+        "Home must be used within a GlobalProvider"
     );
 
     // Restauramos console.error para no afectar otros tests.
